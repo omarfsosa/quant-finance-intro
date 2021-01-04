@@ -1,0 +1,139 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\headheight}{13.6pt}
+\newcommand\question[2]{\vspace{.25in}\hrule\textbf{#1: #2}\vspace{.5em}\hrule\vspace{.10in}}
+\renewcommand\part[1]{\vspace{.10in}\textbf{(#1)}}
+\newcommand\algorithm{\vspace{.10in}\textbf{Algorithm: }}
+\newcommand\correctness{\vspace{.10in}\textbf{Correctness: }}
+\newcommand\runtime{\vspace{.10in}\textbf{Running time: }}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\dx}{\mathrm{d}x}
+\newcommand{\dy}{\mathrm{d}y}
+\pagestyle{fancyplain}
+\lhead{\textbf{\NAME}}
+\chead{\textbf{Solutions: \HWNUM}}
+\rhead{\today}
+\begin{document}\raggedright
+%Section A==============Change the values below to match your information==================
+\newcommand\NAME{Omar Sosa Rodriguez}  % your name
+% \newcommand\ANDREWID{ckingsf}     % your andrew id
+\newcommand\HWNUM{Preface}              % the homework number
+%Section B==============Put your answers to the questions below here=======================
+
+% no need to restate the problem --- the graders know which problem is which,
+% but replacing "The First Problem" with a short phrase will help you remember
+% which problem this is when you read over your homeworks to study.
+
+\question{1}{The normal distribution and expectation} 
+
+\part{a} By definition, the indicator function is equal to $1$ if the argument is true, and it is equal to $0$ otherwise.
+So by definition of expectation we have
+\begin{align}
+    \E(I\{X > K\}) &= \int_{-\infty}^{+\infty} I\{x > K\} p(x \vert \mu, \sigma) \mathrm{d}x \nonumber\\
+                  &= \int_{K}^{+\infty} p(x\vert \mu, \sigma) \mathrm{d}x\nonumber\\
+                  &= \int_{-\infty}^{+\infty}p(x\vert \mu, \sigma)\mathrm{d}x - \int_{-\infty}^{K}p(x\vert \mu, \sigma)\mathrm{d}x\nonumber \\
+                  &= 1 - \Phi(K\vert\mu,\sigma)
+\end{align}
+Where, to get to the last line we use the fact that the normal distribution integrates to 1 over the real line, together with the definition of the cumulative distribution function.
+
+\part{b} (Hint not used). First we write $\max\{K - X, 0\} = I\{K > X\} (K - X)$. Then,
+\begin{align}
+    \E(\max\{K - X, 0\}) &= I\{K > X\} (K - X) \nonumber \\
+                        &=\int_{-\infty}^{+\infty} I\{K > x\} (K - x) p(x\vert \mu, \psi) \mathrm{d}x\nonumber\\
+                        &=K \int_{-\infty}^{K}p(x\vert \mu, \psi)\mathrm{d}x - \int_{-\infty}^{K} x p(x\vert \mu, \psi)\mathrm{d}x \nonumber\\
+                        &=K \Phi (K\vert \mu, \psi) - \int_{-\infty}^{K} x p(x\vert \mu, \psi)\mathrm{d}x \nonumber\\
+\end{align}
+The second term can be simplified using integration by parts:
+\begin{align}
+    \int_{-\infty}^{K} x p(x\vert \mu, \psi) &= x \Phi(x\vert \mu, \psi)\bigg\rvert_{-\infty}^{K} - \int_{-\infty}^{K}\Phi(x\vert \mu, \psi)\mathrm{d}x\nonumber\\
+                                             &= K \Phi(K\vert \mu, \psi) - \int_{-\infty}^{K}\Phi(x\vert \mu, \psi)\mathrm{d}x.
+\end{align}
+Finally,
+\begin{align}
+    \E(\max\{K - X, 0\}) = \int_{-\infty}^{K}\Phi(x\vert \mu, \psi)\mathrm{d}x
+\end{align}
+
+\part{c} This simply requires an algebraic manipulation of the terms in the integral:
+\begin{align}
+    \E(e^{tX}) &= \int_{-\infty}^{+\infty}e^{t x} p(x\vert \mu, \psi)\mathrm{d}x \nonumber\\
+              &= \int_{-\infty}^{+\infty}e^{t x} \frac{1}{\sqrt{2\pi \psi^2}} e^{-\frac{(x - \mu)^2}{2\psi^2}}\mathrm{d}x \nonumber\\
+              &= \int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi \psi^2}} e^{-\frac{(x - \mu - t\psi^2)^2}{2\psi^2}}e^{\mu t + \frac{t^2 \psi^2}{2}}\mathrm{d}x \nonumber\\
+              &= e^{\mu t + \frac{t^2 \psi^2}{2}} \int_{-\infty}^{+\infty} p(x\vert \mu + t\psi^2, \psi)\mathrm{d}x
+\end{align}
+And, since the normal distribution integrates to $1$ over the real line, we have
+\begin{align}
+    \E(e^{tX}) = e^{\mu t + \frac{t \psi^2}{2}}
+\end{align}
+
+
+\question{2}{The log-normal distribution}
+\part{a} If $X$ is normally distributed with mean $\mu$ and variance $\sigma^2$, then $Y = e^{X}$ is log-normally distributed. Then,
+\begin{align}
+    \E_{p_Y}(Y^t) = \E_{p_X}(e^{t X}) = e^{\mu t + \frac{t^2 \sigma^2}{2}}
+\end{align}
+(I've included the subscript to emphasise the distribution, but I'll normally leave it as implicit). Then,
+\begin{align}
+    \E(Y)   &= e^{\mu + \frac{\sigma^2}{2}} \\
+    \E(Y^2) &= e^{2\mu + 2\sigma^2} \\
+    \V(Y)   &= E(Y^2) - E(Y)^2 \nonumber \\
+            &= e^{2\mu + \frac{\sigma^2}{2}} - e^{2\mu + \sigma^2} \nonumber\\
+            &= e^{2\mu + \sigma^2}(e^{\sigma^2} - 1)
+\end{align}
+\part{b} Let $\mu = \log f - \frac12 \sigma^2$. By plugging this into the previous result we immediately get:
+\begin{align}
+    \E(Y) &= f \\
+    \V(Y) &= f^2 (e^{\sigma^2} - 1) = f^2 (1 + \sigma^2 + \frac12\sigma^4 + ... - 1)\quad\text{(Taylor expand the exponential)}\nonumber\\
+          &= f^2 \sigma^2(1 + \frac12\sigma^2 + ...)
+\end{align}
+
+\question{3}{Conditional expectation}
+
+\part{a} The variable $X_n$ takes only two possible values once $X_{n-1}$ is given. Therefore,
+\begin{align}
+    \E(X_n\vert X_{n-1}) &= X_{n-1}(1 + u) p + X_{n-1}(1 + d)(1 - p) \nonumber\\
+                         &= X_{n-1}((1 + u)p + (1 + d)(1 - p))
+\end{align}
+
+\part{b} First note that $Y_n = \frac{Y_{n-1}}{1 + r}$. So in general we have
+\begin{align}
+    \E(Y_n\vert Y_{n-1}) &= \frac{Y_{n-1}}{1 + r}\left((1 + u)p + (1 + d)(1 - p)\right).
+\end{align}
+By requiring $\E(Y_n\vert Y_{n-1}) = Y_{n-1}$ we get
+\begin{align}
+    r = up + d(1 - p).
+\end{align}
+And since $p\in\left[0, 1\right]$ we obtain that $r\in\left[d, u\right]$.
+
+\part{c} By \textit{iterated expectation} we know that
+\begin{align}
+    \E(\E(Y_n\vert Y_{n - 1})\vert Y_{n - 2}) = \E(Y_n \vert Y_{n-2}).
+\end{align}
+On the other hand,
+\begin{align}
+    \E(\E(Y_n\vert Y_{n - 1})\vert Y_{n - 2}) = \E(Y_{n-1}\vert Y_{n - 2}) = Y_{n-2}.
+\end{align}
+It follows that $\E(Y_n\vert Y_{n-2}) = Y_{n-2}$. The result for general $n$ and $m$ can be obtained by simply using more iterations (or by formal induction).
+
+\question{4}{The normal cumulative distribution function}
+By definition
+\begin{align}
+    \Phi(x) = \int_{-\infty}^{x}\mathcal{N}(y\vert 0, 1) \dy
+\end{align}
+By symmetry of the normal distribution around zero, we have that $\Phi(0) = 1/2$. And the first three derivatives are
+\begin{align}
+    \Phi'(x) &= \mathcal{N}(x\vert 0, 1) = \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}\\
+    \Phi''(x) & = -\frac{x}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}\\
+    \Phi'''(x) & = \frac{x^2}{\sqrt{2\pi}}e^{-\frac{x^2}{2}} - \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
+\end{align}
+Plugging the above into the Taylor expansion we get
+\begin{align}
+    \Phi(x) &= \Phi(0) + x \Phi'(0) + \frac{x^2}{2!}\Phi''(0) + \frac{x^3}{3!}\Phi'''(0) + ... \nonumber\\
+            &= \frac12 + \frac{x}{\sqrt{2\pi}} - \frac{x^3}{6\sqrt{2\pi}} + ... 
+\end{align}
+\end{document}
