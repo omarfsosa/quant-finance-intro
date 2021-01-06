@@ -1,0 +1,81 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\headheight}{13.6pt}
+\newcommand\question[2]{\vspace{.25in}\hrule\textbf{#1: #2}\vspace{.5em}\hrule\vspace{.10in}}
+\renewcommand\part[1]{\vspace{.10in}\textbf{(#1)}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\dx}{\mathrm{d}x}
+\newcommand{\dy}{\mathrm{d}y}
+\pagestyle{fancyplain}
+\lhead{\textbf{\NAME}}
+\chead{\textbf{Solutions: \HWNUM}}
+\rhead{\today}
+\begin{document}\raggedright
+%Section A==============Change the values below to match your information==================
+\newcommand\NAME{Omar Sosa Rodriguez}
+\newcommand\HWNUM{Ch. 1 - Preliminaries}
+
+\question{1}{Daycount and frequency} 
+
+\part{a} Using either a semi-bond or annual-money, the accrued value after one year (365 days) should be the same. Therefore
+\begin{align}
+    (1 + y_{SB}\frac{180}{360})^2 &= (1 + y_{AM} \frac{365}{360}) \nonumber\\
+    \implies y_{AM} &= \frac{360}{365}\left[(1 + \frac{y_{SB}}{2})^2 - 1\right]
+\end{align}
+
+\part{b} We simply need to plug in the different values in the above result:
+\begin{align}
+    y_{AM}\bigg\rvert_{y_{SB} = 0.05} \approx 0.04993 \\
+    y_{AM}\bigg\rvert_{y_{SB} = 0.06} \approx 0.06007 \\
+    y_{AM}\bigg\rvert_{y_{SB} = 0.07} \approx 0.07024    
+\end{align}
+We see that when $y_{SB}\in\left[0.05, 0.07\right]$ then $y_{AM}\in\left[0.04993, 0.07024\right]$ so we conclude that $y_{AM}$ has higher standard deviation.
+
+\part{c}From part \textbf{(a)} we have that
+\begin{align}
+    \frac{\mathrm{d}y_{AM}}{y_{AM}} &= \frac{360}{365 y_{AM}}\left[\left(1 + \frac{y_{SB}}{2}\right)\mathrm{d}y_{SB}\right] \nonumber\\
+                                    &= \frac{\left(1 + \frac{y_{SB}}{2}\right)\mathrm{d}y_{SB}}{\left(1 + \frac{y_{SB}}{2}\right)^2 - 1}\nonumber\\
+                                    &= \frac{\left(1 + \frac{y_{SB}}{2}\right)}{\left(1 + \frac{y_{SB}}{4}\right)}\frac{\mathrm{d}y_{SB}}{y_{SB}} \\
+\end{align}
+Then, at $y_{SB} = 0.06$, the ratio of the volatilities is $1.03/1.025 \approx 1.0049$.
+
+\question{2}{Simple interest} Let $r, r_A, r_Q$ and $r_C$ be the simple, annually compouded, quarterly compounded, and continuous interest rates respectively. After $T$ years, they should yield the same accrued values and therefore
+\begin{align}
+    1 + r T = (1 + r_A)^T = (1 +\frac{r_Q}{4})^{4T} = e^{r_C T} .
+\end{align}
+So that,
+\begin{align}
+    r_A &= (1 + r T)^{1/T} - 1 \label{eq:annual}\\
+    r_Q &= 4\left[(1 + r T)^{1/4T} - 1\right]\\
+    r_C &= \frac{1}{T}\log(1 + r T)
+\end{align}
+Finally, by plugging in $r=0.05$ and $T=10$, we get $r_A \approx 0.0413$, $r_Q \approx 0.0407$ and $r_C = 0.0405$.
+\part{b} We take the limit as $T\to\infty$ of equation \eqref{eq:annual}:
+\begin{align}
+    r_A \to \lim_{T\to\infty} (1 + r T)^{1/T} - 1 &= \lim_{T\to\infty} e^{\frac{1}{T}\log(1 + r T)} - 1\nonumber \\
+                                          &= e^{\lim_{T\to\infty}\frac{1}{T}\log(1 + r T)} - 1\nonumber \\
+                                          &= e^{\lim_{T\to\infty}\frac{r}{1 + rT}} - 1\nonumber \\
+                                          &= e^{0} - 1\nonumber \\
+                                          &= 0
+\end{align}
+
+\question{3}{Non-standard annuity}
+\part{a} Let today be denoted by $t=0$ and the maturity date by $T$. The phrasing of the problem is a bit vague, but let's assume that the payments are made each year. Then, the value today is
+\begin{align}
+    V &= \sum_{n=1}^{T} \frac{n}{(1 + r)^n} \nonumber\\
+    \implies \frac{V_T}{(1 + r)} &= \sum_{n=1}^{T} \frac{n}{(1 + r)^{n+1}} \nonumber\\
+                                 &= \sum_{n=1}^{T} \frac{n+1}{(1 + r)^{n+1}} - \sum_{n=1}^{T} \frac{1}{(1 + r)^{n+1}} \nonumber\\
+                                 &= \sum_{n=2}^{T + 1} \frac{k}{(1 + r)^{k}} -\frac{1}{r(1 + r)}\left(1 - \frac{1}{(1 + r)^T}\right) \nonumber \\
+                                 &= -\frac{1}{1 + r} + \frac{T + 1}{(1 + r)^{T+1}} + \sum_{n=1}^{T} \frac{k}{(1 + r)^{k}} -\frac{1}{r(1 + r)}\left(1 - \frac{1}{(1 + r)^T}\right) \nonumber\\
+                                 &= -\frac{1}{1 + r} + \frac{T + 1}{(1 + r)^{T+1}} + V - \frac{1}{r(1 + r)}\left(1 - \frac{1}{(1 + r)^T}\right) \nonumber \\
+   \implies V &= \frac{1}{r}\left(1 - \frac{T + 1}{(1 + r)^T}\right) + \frac{1}{r^2}\left(1 - \frac{1}{(1 + r)^T}\right)
+\end{align}
+\part{b} Taking the limit of the above as $T\to\infty$ we get that $V\to (r + 1)/r^2$.
+
+\end{document}
